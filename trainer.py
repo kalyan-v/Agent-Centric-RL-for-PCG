@@ -33,11 +33,9 @@ class Trainer(object):
         self.save_paths['levels'] = os.path.join(save,'levels.csv')
         self.save_paths['loss'] = os.path.join(save,'losses.csv')
 
-        #Elite Settings
         self.elite_mode = elite_mode
         self.elite_persist = elite_persist
 
-        #Ensure directories exist
         pathlib.Path(self.save_paths['agent']).mkdir(parents=True, exist_ok=True)
         pathlib.Path(self.save_paths['models']).mkdir(parents=True, exist_ok=True)
 
