@@ -263,7 +263,9 @@ class Trainer(object):
             levels, states = self.new_levels(z(1)) #scale debug
             with torch.no_grad():
                 expected_rewards = self.critic(states)
-            #real_rewards = self.eval_levels(levels)
+            for i in range(len(levels)):
+                final = self.level_visualizer.draw_level(levels[i])
+                final.show()
             real_rewards = ['Nan']
             self.save_levels(update, levels, real_rewards, expected_rewards)
 
