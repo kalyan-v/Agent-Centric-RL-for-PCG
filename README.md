@@ -6,7 +6,17 @@
 
 <p align="center">
     <img src="Generated levels/1.png"
-    height="75%" width="75%">
+    height="15%" width="15%">
+   <img src="Generated levels/2.png"
+    height="15%" width="15%">
+   <img src="Generated levels/3.png"
+    height="15%" width="15%">
+   <img src="Generated levels/4.png"
+    height="15%" width="15%">
+   <img src="Generated levels/5.png"
+    height="15%" width="15%">
+   <img src="Generated levels/6.png"
+    height="15%" width="15%">
 </p>
 
 ## Basic Requirements ##
