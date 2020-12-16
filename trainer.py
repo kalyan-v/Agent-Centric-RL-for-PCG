@@ -177,7 +177,6 @@ class Trainer(object):
         masks = torch.ones(x.size(0), 1).to(self.device)
         #actions = torch.zeros_like(masks).long()
 
-        #value, _, _, _, dist_entropy, _ = self.agent.actor_critic.evaluate_actions(x, rnn_hxs, masks, actions)
         Qs, actor_features, _ = self.agent.actor_critic.base(x, rnn_hxs, masks)
         dist = self.agent.actor_critic.dist(actor_features)
         value = (dist.probs*Qs).sum(1).unsqueeze(1)
@@ -186,11 +185,6 @@ class Trainer(object):
         #return self.agent.actor_critic.get_value(x, rnn_hxs, masks)
 
     def eval_levels(self, tensor):
-        #raise Exception("Not implemented")
-        #levels = self.game.create_levels(tensor)
-        #What to pass to play?
-        #File Names?
-        #Create new envs for evaluation...
         rewards = self.agent.play(levels)
         return rewards
 
@@ -198,15 +192,6 @@ class Trainer(object):
         self.generator.train()
         z = self.z_generator(batch_size, self.generator.z_size) #128 scale debug
         z_norm = lambda z: (z.norm(dim=1) - math.sqrt(self.generator.z_size)) / .7
-
-        #scale = nn.Sequential(
-        #    nn.Linear(64, 128, bias=False), nn.ReLU(),
-        #    nn.Linear(128, 256, bias=False), nn.ReLU(),
-        #    nn.Linear(256, 512, bias=False), nn.ReLU())
-        #scale = nn.Linear(128, 512)
-        #scale.to(self.device)
-        #scale_optim = torch.optim.Adam(scale.parameters(), lr=1e-4) #scale debug
-
         loss = 0
         entropy = 0
         gen_updates = 0
@@ -227,19 +212,13 @@ class Trainer(object):
                 generated_levels = lvl_imgs
 
                 self.gen_optimizer.zero_grad()
-                #scale_optim.zero_grad() #scale
                 noise = z()
                 levels = self.generator(noise)
                 states = self.generator.adapter(levels)
                 expected_value, dist, hidden = self.critic(states)
                 #diversity = (states[:-1] - states[1:]).pow(2).mean()
                 diversity = (hidden[:-1] - hidden[1:]).pow(2).mean()
-                target = torch.zeros_like(expected_value) #was ones like
-                ##target = .5 + .5*z_norm(noise)
-                ##target = .5 + torch.rand_like(expected_value)
-                ##target_dist = torch.ones_like(dist)
-                #gen_loss = F.binary_cross_entropy_with_logits(expected_value, target)
-                #gen_loss = F.mse_loss(expected_value, target)
+                target = torch.zeros_like(expected_value)
                 gen_loss = self.loss(expected_value, target)
                 div_loss = -diversity
                 if(i < gen_batches):
@@ -248,8 +227,6 @@ class Trainer(object):
                      loss = div_loss
                 loss.backward()
                 self.gen_optimizer.step()
-                #scale_optim.step()  #scale
-
                 self.agent.writer.add_scalar('generator/loss', gen_loss.item(), gen_updates)
                 self.agent.writer.add_scalar('generator/entropy', dist.item(), gen_updates)
                 self.agent.writer.add_scalar('generator/diversity', diversity.item(), gen_updates)
@@ -258,7 +235,7 @@ class Trainer(object):
 
             self.agent.writer.add_images('Generated Levels', generated_levels, (update-1), dataformats='HWC')
             #Save a generated level
-            levels, states = self.new_levels(z(1)) #scale debug
+            levels, states = self.new_levels(z(1))
             with torch.no_grad():
                 expected_rewards = self.critic(states)
             for i in range(len(levels)):
