@@ -190,7 +190,7 @@ class Trainer(object):
 
     def train(self, updates, batch_size, gen_batches, div_batches, rl_steps, pretrain):
         self.generator.train()
-        z = self.z_generator(batch_size, self.generator.z_size) #128 scale debug
+        z = self.z_generator(batch_size, self.generator.z_size)
         z_norm = lambda z: (z.norm(dim=1) - math.sqrt(self.generator.z_size)) / .7
         loss = 0
         entropy = 0
