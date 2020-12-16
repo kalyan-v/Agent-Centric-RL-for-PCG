@@ -1,5 +1,3 @@
-#Simple StyleGAN vs simple DCGAN
-
 import torch
 import torch.nn as nn
 
