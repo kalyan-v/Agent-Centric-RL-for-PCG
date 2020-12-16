@@ -5,7 +5,7 @@
 ## About the project ##
 
 <p align="center">
-    <img src="Generated Levels/1.png" alt="Main Menu render"
+    <img src="Generated Levels/1.png"
     height="75%" width="75%">
 </p>
 
