@@ -20,7 +20,6 @@ def main(game_name, game_length):
 
 	#Agent
 	num_processes = 16
-	experiment = "Experiment_Paper"
 	lr = .00025
 	model = 'resnet'
 	dropout = 0
@@ -41,8 +40,7 @@ def main(game_name, game_length):
 	elite_persist = True
 	elite_mode = 'max'
 	load_version = 0
-	notes = 'Configured to match paper results'
-	agent.writer.add_hparams({'Experiment': experiment, 'RL_LR':lr, 'Minibatch':gen_batch, 'RL_Steps': rl_batch, 'Notes':notes}, {})
+	agent.writer.add_hparams({'RL_LR':lr, 'Minibatch':gen_batch, 'RL_Steps': rl_batch}, {})
 	t = Trainer(gen, agent, experiment, load_version, elite_mode, elite_persist)
 	t.train(gen_updates, gen_batch, gen_batches, diversity_batches, rl_batch, pretrain)
 
