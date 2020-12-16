@@ -3,7 +3,8 @@
 </h1>
 
 ## About the project ##
-
+A Level generator which when given a game portrayed in Video Game Description Language (VGDL) and which can be played by some AI player, constructs any necessary number of various levels for that game which are enjoyable for humans to play.
+## Some screenshots as the training progresses ##
 <p align="center">
     <img src="Generated levels/1.png"
     height="15%" width="15%">
